@@ -1,0 +1,18 @@
+Package: krep
+Version: 0.0.9000
+Date: 2022-06-08
+Title: Simple class for managing log likelihoods
+Author: Paul Bailey [aut, cre]
+Maintainer: Paul Bailey <pbailey@air.org>
+Depends: R (>= 4.0.0)
+BugReports: https://github.com/American-Institutes-for-Research/EdSurvey/issues
+Description: Calculate sums and products of very small likelihoods
+License: GPL-2
+VignetteBuilder: knitr
+Imports: methods
+Suggests: knitr,
+          testthat,
+          rmarkdown,
+RoxygenNote: 7.2.0
+Note: This publication was prepared for NCES under Contract No. ED-IES-12-D-0002 with the American Institutes for Research. Mention of trade names, commercial products, or organizations does not imply endorsement by the U.S. Government.
+Encoding: UTF-8

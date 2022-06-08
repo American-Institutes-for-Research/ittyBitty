@@ -1,2 +1,2 @@
 # ittyBitty
-Useful R functions for small numbers
+R functions for very small numbers
