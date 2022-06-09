@@ -2,6 +2,13 @@ setClass("ittyBitty",
          representation = representation(k="numeric", w="numeric"),
          prototype = list(k=numeric(),w=numeric()))
 
+#' Setting subset and length methods
+setMethod("[", "ittyBitty", function(x, i, j, ..., drop=TRUE) {
+  initialize(x, k=x@k[i], w=x@w[i])
+})
+
+setMethod(length, "ittyBitty", function(x) length(x@k))
+
 .ittyBitty.clean <- function(x) {
   # keep w between 1 and 0.5
   dw <- log2(x@w) + 1
