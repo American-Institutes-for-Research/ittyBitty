@@ -22,8 +22,8 @@ setMethod(length, "ittyBitty", function(x) length(x@k))
 
 #' make a new ittyBitty number
 #' 
-#' @k numeric, the exponent
-#' @w numeric, the mantista
+#' @param k numeric, the exponent
+#' @param w numeric, the mantista
 #' 
 #' An \code{ittyBitty} is a representation of a numer as w * 2^k
 #' 
