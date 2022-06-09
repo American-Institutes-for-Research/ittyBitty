@@ -1,6 +1,5 @@
 setClass("ittyBitty",
-         representation = representation(k="numeric", w="numeric"),
-         prototype = list(k=numeric(),w=numeric()))
+         slots = list(k="numeric", w="numeric"))
 
 #' Setting subset and length methods
 setMethod("[", "ittyBitty", function(x, i, j, ..., drop=TRUE) {
@@ -12,9 +11,11 @@ setMethod(length, "ittyBitty", function(x) length(x@k))
 .ittyBitty.clean <- function(x) {
   # keep w between 1 and 0.5
   dw <- log2(x@w) + 1
-  if(dw != 0) {
-    x@k <- x@k + dw
-    x@w <- x@w * 2^(-dw)
+  for(i in 1:length(dw)){
+    if(dw[i] != 0) {
+      x@k[i] <- x@k[i] + dw[i]
+      x@w[i] <- x@w[i] * 2^(-dw[i])
+    }
   }
   return(x)
 }
