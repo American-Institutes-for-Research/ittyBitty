@@ -10,13 +10,9 @@ setMethod(length, "ittyBitty", function(x) length(x@k))
 
 .ittyBitty.clean <- function(x) {
   # keep w between 1 and 0.5
-  dw <- log2(x@w) + 1
-  for(i in 1:length(dw)){
-    if(dw[i] != 0) {
-      x@k[i] <- x@k[i] + dw[i]
-      x@w[i] <- x@w[i] * 2^(-dw[i])
-    }
-  }
+  suppressWarnings(dw <- 1 + ifelse(x@w == 0, 0, ifelse(x@w < 0, floor(-log2(-x@w)), floor(log2(x@w)))))
+  x@k <- ifelse(dw != 0, x@k + dw, x@k)
+  x@w <- ifelse(dw != 0, x@w * 2^(-dw), x@w)
   return(x)
 }
 
@@ -76,7 +72,7 @@ log_as_numeric <- function(x) {
 }
 
 .add.ittyBitty.ittyBitty <- function(x, y) {
-  k3 <- 1 + max(x@k, y@k)
+  k3 <- 1 + pmax(x@k, y@k)
   w3 <- x@w/2^(k3-x@k) + y@w/2^(k3-y@k)
   return(.ittyBitty.clean(new("ittyBitty", k=k3, w=w3)))
 }
@@ -88,7 +84,6 @@ log_as_numeric <- function(x) {
 }
 
 .add.ittyBitty.numeric <- function(x, y) {
-  y <- ittyBitty(k=0, w=y)
   k2 <- x@k
   w2 <- y * x@w
   return(.ittyBitty.clean(new("ittyBitty", k=k2, w=w2)))
