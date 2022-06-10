@@ -6,6 +6,10 @@ setMethod("[", "ittyBitty", function(x, i, j, ..., drop=TRUE) {
   initialize(x, k=x@k[i], w=x@w[i])
 })
 
+setMethod("[[", "ittyBitty", function(x, i, j, ...) {
+  initialize(x, k=x@k[i], w=x@w[i])
+})
+
 setMethod(length, "ittyBitty", function(x) length(x@k))
 
 .ittyBitty.clean <- function(x) {
@@ -39,18 +43,26 @@ ittyBitty <- function(k=double(), w=double()) {
 #' @export
 #' @method print ittyBitty
 print.ittyBitty <- function(x, ...) {
+  cat(paste0("2^",x@k, " * ", x@w))
+}
+
+format.ittyBitty <- function(x, ...) {
   paste0("2^",x@k, " * ", x@w)
 }
 
-show.ittyBitty <- function(object) {
-  print(object)
-}
-
-setMethod("show", "ittyBitty", show.ittyBitty)
+setMethod("show", "ittyBitty", function(object) print(object))
 
 setAs("ittyBitty", "numeric", function(from){
   return(2^from@k * from@w)
 } )
+
+setMethod("as.numeric", "ittyBitty", function(x) {
+  2^x@k * x@w
+})
+
+setMethod("as.character", "ittyBitty", function(x) {
+  paste0("2^",x@k, " * ", x@w)
+})
 
 # make a ittyBitty as exp(x)
 #' @export
