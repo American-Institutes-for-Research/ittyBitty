@@ -10,7 +10,7 @@ setMethod(length, "ittyBitty", function(x) length(x@k))
 
 .ittyBitty.clean <- function(x) {
   # keep w between 1 and 0.5
-  suppressWarnings(dw <- 1 + ifelse(x@w == 0, 0, ifelse(x@w < 0, floor(-log2(-x@w)), floor(log2(x@w)))))
+  suppressWarnings(dw <- 1 + ifelse(x@w == 0, 0, ifelse(x@w < 0, floor(log2(-x@w)), floor(log2(x@w)))))
   x@k <- ifelse(dw != 0, x@k + dw, x@k)
   x@w <- ifelse(dw != 0, x@w * 2^(-dw), x@w)
   return(x)
@@ -77,18 +77,6 @@ log_as_numeric <- function(x) {
   return(.ittyBitty.clean(new("ittyBitty", k=k3, w=w3)))
 }
 
-.mult.ittyBitty.numeric <- function(x, y) {
-  k2 <- x@k
-  w2 <- y * x@w
-  return(.ittyBitty.clean(new("ittyBitty", k=k2, w=w2)))
-}
-
-.add.ittyBitty.numeric <- function(x, y) {
-  k2 <- x@k
-  w2 <- y * x@w
-  return(.ittyBitty.clean(new("ittyBitty", k=k2, w=w2)))
-}
-
 .mult.ittyBitty.ittyBitty <- function(x, y) {
   k3 <- x@k + y@k
   w3 <- x@w * y@w
@@ -104,17 +92,19 @@ Arith.ittyBitty.ittyBitty <- function(e1, e2) {
 }
 
 Arith.ittyBitty.numeric <- function(e1, e2) {
+  e2 <- ittyBitty(k=0,w=e2)
   switch(.Generic,
-    "+" = .add.ittyBitty.numeric(e1, e2),
-    "*" = .mult.ittyBitty.numeric(e1, e2),
+    "+" = .add.ittyBitty.ittyBitty(e1, e2),
+    "*" = .mult.ittyBitty.ittyBitty(e1, e2),
     stop("unknown method for ittyBitty:",.Generic)
     )
 }
 
 Arith.numeric.ittyBitty <- function(e1, e2) {
+  e1 <- ittyBitty(k=0, w=e1)
   switch(.Generic,
-    "+" = .add.ittyBitty.numeric(e2, e1),
-    "*" = .mult.ittyBitty.numeric(e2, e1),
+    "+" = .add.ittyBitty.ittyBitty(e1, e2),
+    "*" = .mult.ittyBitty.ittyBitty(e1, e2),
     stop("unknown method for ittyBitty:",.Generic)
     )
 }
