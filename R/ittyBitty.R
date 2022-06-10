@@ -92,7 +92,7 @@ log_as_numeric <- function(x) {
 .mult.ittyBitty.ittyBitty <- function(x, y) {
   k3 <- x@k + y@k
   w3 <- x@w * y@w
-  return(new("ittyBitty", k=k3, w=w3))
+  return(.ittyBitty.clean(new("ittyBitty", k=k3, w=w3)))
 }
 
 Arith.ittyBitty.ittyBitty <- function(e1, e2) {
