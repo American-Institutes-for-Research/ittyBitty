@@ -12,6 +12,13 @@ setMethod("[[", "ittyBitty", function(x, i, j, ...) {
 
 setMethod(length, "ittyBitty", function(x) length(x@k))
 
+#' Setting subset and length methods
+setMethod("[<-", "ittyBitty", function(x, i, j, ..., value) {
+  x@k[i] <- value@k
+  x@w[i] <- value@w
+  return(x)
+})
+
 .ittyBitty.clean <- function(x) {
   # keep w between 1 and 0.5
   suppressWarnings(dw <- 1 + ifelse(x@w == 0, 0, ifelse(x@w < 0, floor(log2(-x@w)), floor(log2(x@w)))))
@@ -43,7 +50,7 @@ ittyBitty <- function(k=double(), w=double()) {
 #' @export
 #' @method print ittyBitty
 print.ittyBitty <- function(x, ...) {
-  cat(paste0("2^",x@k, " * ", x@w))
+  print(as.character(x))
 }
 
 format.ittyBitty <- function(x, ...) {
@@ -124,4 +131,20 @@ Arith.numeric.ittyBitty <- function(e1, e2) {
 setMethod("Arith", signature(e1="ittyBitty", e2="ittyBitty"), Arith.ittyBitty.ittyBitty)
 setMethod("Arith", signature(e1="ittyBitty", e2="numeric"), Arith.ittyBitty.numeric)
 setMethod("Arith", signature(e1="numeric", e2="ittyBitty"), Arith.numeric.ittyBitty )
+
+Prod.ittyBitty <- function(x) {
+  res <- ittyBitty(k=0, w=1)
+  for(i in 1:length(x)) {
+    res <- res * x[i]
+  }
+  return(res)
+}
+
+summary.ittyBitty <- function(x, ..., na.rm=FALSE) {
+  switch(.Generic,
+    "prod" = Prod.ittyBitty(x)
+    )
+}
+
+setMethod("Summary", "ittyBitty", summary.ittyBitty)
 
