@@ -1,7 +1,7 @@
 setClass("ittyBitty",
          slots = list(k="numeric", w="numeric"))
 
-#' Setting subset and length methods
+#' subset methods
 setMethod("[", "ittyBitty", function(x, i, j, ..., drop=TRUE) {
   initialize(x, k=x@k[i], w=x@w[i])
 })
@@ -10,6 +10,7 @@ setMethod("[[", "ittyBitty", function(x, i, j, ...) {
   initialize(x, k=x@k[i], w=x@w[i])
 })
 
+# length method
 setMethod(length, "ittyBitty", function(x) length(x@k))
 
 #' Setting subset and length methods
