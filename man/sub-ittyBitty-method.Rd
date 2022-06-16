@@ -2,10 +2,10 @@
 % Please edit documentation in R/ittyBitty.R
 \name{[,ittyBitty-method}
 \alias{[,ittyBitty-method}
-\title{Setting subset and length methods}
+\title{subset methods}
 \usage{
 \S4method{[}{ittyBitty}(x, i, j, ..., drop = TRUE)
 }
 \description{
-Setting subset and length methods
+subset methods
 }
